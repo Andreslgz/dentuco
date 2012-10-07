@@ -1,0 +1,9 @@
+{
+  "name": "Dentuco",
+  "description": "controle de consultas para consultórios dentários",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "3.0.0rc3",
+    "mongoose": "3.0.1"
+  }
+}
