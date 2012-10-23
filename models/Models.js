@@ -8,11 +8,12 @@
 
 module.exports = function (config) {
     "use strict";
-    
+
     var mongoose = require('mongoose');
     mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.password + '@' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
-    
+
     return {
-        User      : mongoose.model('Artist', require('./User.js')(mongoose))
+        User      : mongoose.model('Artist',  require('./User.js')(mongoose)),
+        Patient   : mongoose.model('Patient', require('./Patient.js')(mongoose))
     };
 }
