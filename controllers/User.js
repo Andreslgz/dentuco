@@ -23,7 +23,8 @@ module.exports = function (model) {
                     response.send({user : {
                         name  : user.name,
                         email : user.name,
-                        phone : user.phone
+                        phone : user.phone,
+                        _id   : user._id
                     }});
                 }
             });
@@ -39,7 +40,8 @@ module.exports = function (model) {
                         result.push({
                             name  : users[i].name,
                             email : users[i].name,
-                            phone : users[i].phone
+                            phone : users[i].phone,
+                            _id   : users[i]._id
                         });
                     }
                     response.send({users : result});
@@ -58,7 +60,8 @@ module.exports = function (model) {
                         response.send({
                             name  : user.name,
                             email : user.email,
-                            phone : user.phone
+                            phone : user.phone,
+                            _id   : user._id
                         });
                     }
                 }
@@ -97,7 +100,8 @@ module.exports = function (model) {
                             response.send({user : {
                                 name  : user.name,
                                 email : user.name,
-                                phone : user.phone
+                                phone : user.phone,
+                                _id   : user._id
                             }});
                         }
                     }
@@ -105,7 +109,7 @@ module.exports = function (model) {
             });
         });
         
-        app.post('/user/:id/delete', function (request, response) {
+        app.del('/user/:id', function (request, response) {
             model.user.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
@@ -129,7 +133,7 @@ module.exports = function (model) {
             });
         });
         
-        app.post('/user/:id/update', function (request, response) {
+        app.put('/user/:id', function (request, response) {
             model.user.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
@@ -152,7 +156,8 @@ module.exports = function (model) {
                                     response.send({user : {
                                         name  : user.name,
                                         email : user.name,
-                                        phone : user.phone
+                                        phone : user.phone,
+                                        _id   : user._id
                                     }});
                                 }
                             });

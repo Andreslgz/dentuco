@@ -34,7 +34,8 @@ module.exports = function (model) {
                                         pacientId   : consultation.pacientId,
                                         description : consultation.description,
                                         dateStart   : consultation.dateStart,
-                                        dateFinish  : consultation.dateFinish
+                                        dateFinish  : consultation.dateFinish,
+                                        _id         : consultation._id
                                     }});
                                 }
                             });
@@ -65,7 +66,8 @@ module.exports = function (model) {
                                             pacientId   : consultations[i].pacientId,
                                             description : consultations[i].description,
                                             dateStart   : consultations[i].dateStart,
-                                            dateFinish  : consultations[i].dateFinish
+                                            dateFinish  : consultations[i].dateFinish,
+                                            _id         : consultations[i]._id
                                         });
                                     }
                                     response.send({consultations : result});
@@ -99,7 +101,8 @@ module.exports = function (model) {
                                             pacientId   : consultation.pacientId,
                                             description : consultation.description,
                                             dateStart   : consultation.dateStart,
-                                            dateFinish  : consultation.dateFinish
+                                            dateFinish  : consultation.dateFinish,
+                                            _id         : consultation._id
                                         }});
                                     }
                                 }
@@ -110,7 +113,7 @@ module.exports = function (model) {
             });
         });
         
-        app.post('/consultation/:id/delete', function (request, response) {
+        app.del('/consultation/:id', function (request, response) {
             model.user.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
@@ -144,7 +147,7 @@ module.exports = function (model) {
             });
         });
         
-        app.post('/consultation/:id/update', function (request, response) {
+        app.put('/consultation/:id', function (request, response) {
             model.user.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
@@ -174,7 +177,8 @@ module.exports = function (model) {
                                                     pacientId   : consultation.pacientId,
                                                     description : consultation.description,
                                                     dateStart   : consultation.dateStart,
-                                                    dateFinish  : consultation.dateFinish
+                                                    dateFinish  : consultation.dateFinish,
+                                                    _id         : consultation._id
                                                 }});
                                             }
                                         });
