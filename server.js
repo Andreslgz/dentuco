@@ -9,7 +9,8 @@
 var express = require('express'),
     app = express(),
     config = require('./config.js'),
-    model = require('./models/Models.js')(config);
+    model = require('./models/Models.js')(config),
+    controller = require('./controllers/Controllers.js')(model);
 
 /*  Configurando o server */
 app.configure(function () {
@@ -22,7 +23,9 @@ app.configure(function () {
 });
 
 /*  Chamando controllers */
-//require('./controllers/Controllers.js')(app, model);
+controller.User(app);
+controller.Patient(app);
+controller.Consultation(app);
 
 /*  Ativando o server */
 app.listen(config.host.port);

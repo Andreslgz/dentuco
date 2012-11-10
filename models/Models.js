@@ -13,6 +13,8 @@ module.exports = function (config) {
     mongoose.connect('mongodb://' + config.mongodb.username + ':' + config.mongodb.password + '@' + config.mongodb.url + ':' + config.mongodb.port + '/' + config.mongodb.db);
     
     return {
-        User      : mongoose.model('Artist', require('./User.js')(mongoose))
+        User         : mongoose.model('User', require('./User.js')(mongoose)),
+        Patient      : mongoose.model('User', require('./User.js')(mongoose)),
+        Consultation : mongoose.model('User', require('./User.js')(mongoose))
     };
 }
