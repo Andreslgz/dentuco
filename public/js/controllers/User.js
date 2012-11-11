@@ -1,6 +1,6 @@
-app.controller.User = function () {
+app.controller.User = {
     
-    this.login = function () {
+    login : function () {
         app.views.User.login({
             data     : {},
             confirm  : function (data) {
@@ -21,11 +21,11 @@ app.controller.User = function () {
                 });
             }
         });
-    };
+    },
     
-    this.logout = function () {
+    logout : function () {
         app.user = null;
         app.views.User.header();
         app.controller.User.login();
-    };
-}
+    }
+};

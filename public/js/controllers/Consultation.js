@@ -1,6 +1,6 @@
-app.controller.Consultation = function () {
+app.controller.Consultation = {
     
-    this.list = function () {
+    list : function () {
         app.model.Consultation.list(function (error, consultations) {
             if (error) {
                 app.ui.flash(error);
@@ -12,9 +12,9 @@ app.controller.Consultation = function () {
                 });
             }
         });
-    };
+    },
     
-    this.create = function (dateStart) {
+    create : function (dateStart) {
         app.views.Consultation.create({
             data     : {dateStart : dateStart},
             confirm  : function (data) {
@@ -33,9 +33,9 @@ app.controller.Consultation = function () {
                 app.controller.Consultation.list();
             }
         });
-    };
+    },
     
-    this.update = function (consultation) {
+    update : function (consultation) {
         app.views.Consultation.update({
             data     : {consultation : consultation},
             confirm  : function (data) {
@@ -57,9 +57,9 @@ app.controller.Consultation = function () {
                 app.controller.Consultation.list();
             }
         });
-    };
+    },
     
-    this.remove = function (consultation) {
+    remove : function (consultation) {
         app.views.Consultation.remove({
             data     : {consultation : consultation},
             confirm  : function (data) {
@@ -76,13 +76,13 @@ app.controller.Consultation = function () {
                 app.controller.Consultation.list();
             }
         });
-    };
+    },
     
-    this.details = function (consultation) {
+    details : function (consultation) {
         app.views.Consultation.details({
             data : {consultation : consultation},
             update   : app.controller.Consultation.update,
             remove   : app.controller.Consultation.remove
         })
-    };
-}
+    }
+};

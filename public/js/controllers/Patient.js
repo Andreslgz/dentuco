@@ -1,6 +1,6 @@
-app.controller.Patient = function () {
+app.controller.Patient = {
     
-    this.list = function () {
+    list : function () {
         app.model.Patient.list(function (error, patients) {
             if (error) {
                 app.ui.flash(error);
@@ -13,9 +13,9 @@ app.controller.Patient = function () {
                 });
             }
         });
-    };
+    },
     
-    this.create = function () {
+    create : function () {
         app.views.Patient.create({
             data     : {},
             confirm  : function (data) {
@@ -34,9 +34,9 @@ app.controller.Patient = function () {
                 app.controller.Patient.list();
             }
         });
-    };
+    },
     
-    this.update = function (patient) {
+    update : function (patient) {
         app.views.Patient.update({
             data     : {patient : patient},
             confirm  : function (data) {
@@ -57,9 +57,9 @@ app.controller.Patient = function () {
                 app.controller.Patient.list();
             }
         });
-    };
+    },
     
-    this.remove = function (patient) {
+    remove : function (patient) {
         app.views.Patient.remove({
             data     : {patient : patient},
             confirm  : function (data) {
@@ -76,5 +76,5 @@ app.controller.Patient = function () {
                 app.controller.Patient.list();
             }
         });
-    };
-}
+    }
+};
