@@ -44,3 +44,14 @@ function setCookie(c_name,value,exdays)
     var c_value = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toUTCString());
     document.cookie = c_name + "=" + c_value;
 }
+
+/* */
+function flash(kind, title, body) {
+    $('#flash-error').hide();
+    $('#flash-success').hide();
+    var flash = $('#flash-'+kind);
+    flash.find('.flash-title').html('<strong>'+title+'</strong>');
+    flash.find('.flash-body').html(body);
+    flash.fadeIn();
+    setTimeout(function(){ flash.fadeOut(); }, 5000)
+}

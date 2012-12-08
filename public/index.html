@@ -15,18 +15,22 @@
     <body>
         <div class="row">
             <div class="span12">
+                <!-- /Topbar -->
                 <div id="top-bar">
-                    <div class="span3 no-margin" style="width: 240px;">
-                        <img src="img/logo.png" class="logo">
+                    <div class="span3 no-margin logo">
+                        <img src="img/logo.png">
                     </div>
-                    <div class="span5 no-margin" style="margin-top:30px;">
-                        <div class="alert alert-success">
-                            <a class="close" data-dismiss="alert" href="#">&times;</a>
-                            <strong>Muito bem!</strong><br>
-                            A consulta de <em>Mineiro</em> foi agendada com sucesso.
+                    <div id="flash-container" class="span5 no-margin">
+                        <div id="flash-error" class="alert alert-error">
+                            <span class="flash-title"><strong>Muito bem!</strong></span>
+                            <span class="flash-body">A consulta de <em>Mineiro</em> foi agendada com sucesso.</span>
+                        </div>
+                        <div id="flash-success" class="alert alert-success">
+                            <span class="flash-title"><strong>Muito bem!</strong></span>
+                            <span class="flash-body">A consulta de <em>Mineiro</em> foi agendada com sucesso.</span>
                         </div>
                     </div>
-                    <div class="span4 no-margin" style="float:right; text-align:right;">
+                    <div class="span4 no-margin user-bar-container">
                         <div class="user-bar">
                             <div>
                                 <a href="#">Ainda restam <strong>49 sms</strong> no seu pacote</a> |
@@ -34,12 +38,14 @@
                             </div>
                             <div>
                                 <h3 id='topbar_username'></h3>
-                                <h4>Ortodontista Pediátrico</h4>
+                                <!-- <h4>Ortodontista Pediátrico</h4> -->
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- /Topbar -->
                 <hr>
+                <!-- Sidebar -->
                 <div id="sidebar" class="span3 no-margin">
                     <ul class="nav nav-list">
                         <li class="active"><a href="index.html"><i class="icon-calendar sidebar-icon"></i>Agenda</a></li>
@@ -50,9 +56,12 @@
                     </ul>
                     <center><hr></center>
                 </div>
+                <!-- /Sidebar -->
+                <!-- Main-Content -->
                 <div id="main-content" class="span9 no-margin">
                     <h1>Agenda</h1>
                 </div>
+                <!-- /Main-Content -->
             </div>
         </div>
         <script type="text/javascript">
@@ -60,45 +69,45 @@
             	$('#topbar_username').html(user.name);
                 user.consultations(function (error, consultations) {
                     if (error) {
-                        //colocar código de flash informando o error
+                        flash('error', 'Erro.', error);
                     } else {
                         for (var i in consultations) {
                             draw(consultations[i]);
                         }
                     }
                 });
-                
+
                 var draw = function (consultation) {
-                    
+
                 }
-                
+
                 var erase = function (consultation) {
-                    
+
                 }
 
                 var remove = function (consultation) {
                     consultation.remove(function (error) {
                         if (error) {
-                            //colocar código de flash informando o error
+                            flash('error', 'Erro.', error);
                         } else {
                             //colocar código de flash informando que a consulta foi removida
                             erase(consultation);
                         }
                     });
                 };
-                
+
                 var create = function (data) {
                     var consultation = new Consultation(data);
                     consultation.create(function (error) {
                         if (error) {
-                            //colocar código de flash informando o error
+                            flash('error', 'Erro.', error);
                         } else {
                             //colocar código de flash informando que a consulta foi cadastrada
                             draw(consultation);
                         }
                     });
                 };
-                
+
                 var update = function (consultation, data) {
                     consultation.patientId   = data.patientId;
                     consultation.description = data.description;
@@ -107,7 +116,7 @@
 
                     consultation.update(function (error) {
                         if (error) {
-                            //colocar código de flash informando o error
+                            flash('error', 'Erro.', error);
                         } else {
                             //colocar código de flash informando que a consulta foi editada
                             erase(consultation);

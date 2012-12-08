@@ -23,13 +23,30 @@ hr {
 }
 
 #top-bar .logo {
+	width: 240px;
+}
+
+#top-bar .logo img {
 	width: 220px;
 	margin-top: 24px;
 	margin-left: 10px;
 }
 
+#top-bar .user-bar-container {
+	float: right;
+	text-align: right;
+}
+
 #top-bar .user-bar {
 	margin-top: 10px;
+}
+
+#flash-container {
+	margin-top: 30px;
+}
+
+#flash-container div {
+	display: none;
 }
 /*=================================*/
 #sidebar {
@@ -69,4 +86,30 @@ hr {
 	padding: 20px 40px;
 	width: 619px;
 	margin-bottom: 40px;
+}
+
+/* patients.html */
+#patients-container {
+	margin-bottom: 20px;
+	height: 30px;
+}
+
+#patients-container button {
+	float: right;
+}
+
+.patients-separator {
+	margin: 20px 0px;
+}
+
+.patient-container {
+	height: 70px;
+}
+
+.patient-info {
+	float:left;
+}
+
+.patient-buttons {
+	float: right;
 }
