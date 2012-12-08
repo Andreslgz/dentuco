@@ -162,7 +162,9 @@
                   var name  = form[0]['value'];
                   var phone = form[1]['value'];
                   var email = form[2]['value'];
-                  create({name: name, email: email, phone: phone})
+                  create({name: name, email: email, phone: phone});
+
+                  $('#patient-new').find('input').val('');
                 });
 
                 user.patients(function (error, patients) {
@@ -215,8 +217,6 @@
                         $('#patient-edit-save').on('click', function () {
                           form = form.serializeArray();
 
-                          console.log(form);
-
                           patient.name  = form[0]['value'];
                           patient.phone = form[1]['value'];
                           patient.email = form[2]['value'];
@@ -245,14 +245,11 @@
                 };
 
                 var create = function (data) {
-                  console.log(data);
                     var patient = new Patient(data);
                     patient.create(function (error) {
                         if (error) {
-                          console.log(error);
                             flash('error', 'Erro.', error);
                         } else {
-                          console.log('success');
                             draw(patient);
                         }
                     });
