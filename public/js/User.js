@@ -38,25 +38,25 @@ var User = function (params) {
 }
 
 User.find = function (cb) {
-	  var token =  getCookie('token'),
+    var token =  getCookie('token'),
         id = getCookie('id');
-	  if (token && id) {
-		    $.ajax({
-		        url      : '/user/'+id,
-		        type     : 'GET',
-		        dataType : 'JSON',
-		        data     : {token: token},
-		        success  : function (data) {
-		            if (!data.error) {
-		                var user = new User(data);
-		                cb(null, user);
-		            } else {
-		                cb('Error ao buscar usuário', null);
-		            }
-		        }
-		    });
+    if (token && id) {
+        $.ajax({
+            url      : '/user/'+id,
+            type     : 'GET',
+            dataType : 'JSON',
+            data     : {token: token},
+            success  : function (data) {
+                if (!data.error) {
+                    var user = new User(data);
+                    cb(null, user);
+                } else {
+                    cb('Error ao buscar usuário', null);
+                }
+            }
+        });
     }
     else {
-    	window.location.href = 'login.html'
+        window.location.href = 'login.html'
     }
 }

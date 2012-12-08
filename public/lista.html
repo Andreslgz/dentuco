@@ -33,7 +33,7 @@
                                 <a href="#">Logout</a>
                             </div>
                             <div>
-                                <h3 id='topbar_username'>Dr. Wardemilson</h3>
+                                <h3 id='topbar_username'></h3>
                                 <h4>Ortodontista Pediátrico</h4>
                             </div>
                         </div>
@@ -146,6 +146,11 @@
                     if (error) {
                         //colocar código de flash informando o error
                     } else {
+                        patients.sort(function (a,b){
+                        	  if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+                        	  if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                        	  return 0;
+                        });
                         for (var i in patients) {
                             draw(patients[i]);
                         }
