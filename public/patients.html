@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>MinhasConsultas - Lista de Pacientes</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/font-awesome.css"  rel="stylesheet">
@@ -49,7 +50,7 @@
                 <div id="sidebar" class="span3 no-margin">
                     <ul class="nav nav-list">
                         <li><a href="index.html"><i class="icon-calendar sidebar-icon"></i>Agenda</a></li>
-                        <li class="active"><a href="lista.html"><i class="icon-user sidebar-icon"></i>Pacientes</a></li>
+                        <li class="active"><a href="patients.html"><i class="icon-user sidebar-icon"></i>Pacientes</a></li>
                         <li class="disabled"><a href="#"><i class="icon-list-ol sidebar-icon"></i>Lista de Tarefas</a></li>
                         <li class="disabled"><a href="#"><i class="icon-refresh sidebar-icon"></i>Sincronizar</a></li>
                         <li class="disabled"><a href="#"><i class="icon-cogs sidebar-icon"></i>Configurações</a></li>
@@ -143,10 +144,12 @@
                 </div>
                 <div class="modal-body">
                     Você tem certeza?
+                    <input id='deletable-patient-id' type='hidden'>
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
-                    <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+                    <!-- <button class="btn btn-primary" data-dismiss="modal">Ok</button> -->
+                    <button id='patient-delete' class="btn btn-primary" data-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>
@@ -178,21 +181,56 @@
                 });
 
                 var draw = function (patient) {
-                    var html  = '<li id="'+patient.email+'">';
+                    var html  = '<li id="patient-'+patient._id+'">';
                     html += '<div class="patient-container">';
                     html += '<h4>'+patient.name+'</h4>';
                     html += '<p class="patient-info">'+patient.phone+'<br/>'+patient.email+'</p>';
                     html += '<div class="patient-buttons">';
-                    html += '<button class="btn" type="button" data-toggle="modal" data-target="#edit-patient-modal"><i class="icon-edit"></i> Editar</button>';
-                    html += '<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete-patient-modal"><i class="icon-trash"></i> Apagar</button>';
+                    html += '<button id="patient-'+patient._id+'-edit" class="btn btn-edit" type="button" data-target="#edit-patient-modal"><i class="icon-edit"></i> Editar</button>';
+                    html += '<button id="patient-'+patient._id+'-delete" class="btn btn-danger" type="button" data-target="#delete-patient-modal"><i class="icon-trash"></i> Apagar</button>';
                     html += '</div></div>';
                     html += '<hr class="patients-separator">';
                     html += '</li>';
                     $('#patients').append(html);
+
+                    $('#patient-'+patient._id+'-delete').on('click', function () {
+                      $('#delete-patient-modal').modal('show');
+                      $('#patient-delete').on('click', function () {
+                        remove(patient);
+                      });
+
+                      $('#delete-patient-modal').on('hide', function () {
+                          $('#patient-delete').off();
+                      })
+                    });
+
+                    $('#patient-'+patient._id+'-edit').on('click', function () {
+                        $('#edit-patient-modal').modal('show');
+
+                        var form = $('#patient-edit')
+                        form.find('input[name=name]').val(patient.name)
+                        form.find('input[name=email]').val(patient.email)
+                        form.find('input[name=phone]').val(patient.phone)
+
+                        $('#patient-edit-save').on('click', function () {
+                          form = form.serializeArray();
+
+                          console.log(form);
+
+                          patient.name  = form[0]['value'];
+                          patient.phone = form[1]['value'];
+                          patient.email = form[2]['value'];
+                          update(patient);
+                        });
+
+                        $('#edit-patient-modal').on('hide', function () {
+                            $('#patient-edit-save').off();
+                        })
+                    });
                 }
 
                 var erase = function (patient) {
-                  $('#'+patient.email).remove();
+                  $('#patient-'+patient._id).remove();
                 }
 
                 var remove = function (patient) {
@@ -220,11 +258,7 @@
                     });
                 };
 
-                var update = function (patient, data) {
-                    patient.name = data.name;
-                    patient.email = data.email;
-                    patient.phone = data.phone;
-
+                var update = function (patient) {
                     patient.update(function (error) {
                         if (error) {
                             flash('error', 'Erro.', error);

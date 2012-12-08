@@ -10,10 +10,14 @@ var Patient = function (params) {
     this.remove = function (cb) {
         $.ajax({
             url      : '/patient/' + this._id,
-            type     : 'DEL',
+            type     : 'DELETE',
             dataType : 'JSON',
+            data     : {
+                username : getCookie('id'),
+                token    : getCookie('token')
+            },
             success  : function (data) {
-                if (!data.error) {
+                if (!data) {
                     delete this;
                     cb(null);
                 } else {
@@ -29,10 +33,11 @@ var Patient = function (params) {
             type     : 'PUT',
             dataType : 'JSON',
             data     : {
-                userId : this.userId,
-                name   : this.name,
-                email  : this.email,
-                phone  : this.phone
+                username : getCookie('id'),
+                token    : getCookie('token'),
+                name     : this.name,
+                email    : this.email,
+                phone    : this.phone
             },
             success  : function (data) {
                 if (!data.error) {
