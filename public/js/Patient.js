@@ -1,4 +1,4 @@
-app.model.Patient = function (params) {
+var Patient = function (params) {
     var that = this;
     
     this.userId   = params.userId;
@@ -8,9 +8,11 @@ app.model.Patient = function (params) {
     this._id      = params._id;
     
     this.remove = function (cb) {
-        app.ajax.del({
+        $.ajax({
             url      : '/patient/' + this._id,
-            callback : function (data) {
+            type     : 'DEL',
+            dataType : 'JSON',
+            success  : function (data) {
                 if (!data.error) {
                     delete this;
                     cb(null);
@@ -22,15 +24,17 @@ app.model.Patient = function (params) {
     };
     
     this.update = function (cb) {
-        app.ajax.put({
+        $.ajax({
             url      : '/patient/' + this._id,
+            type     : 'PUT',
+            dataType : 'JSON',
             data     : {
                 userId : this.userId,
                 name   : this.name,
                 email  : this.email,
                 phone  : this.phone
             },
-            callback : function (data) {
+            success  : function (data) {
                 if (!data.error) {
                     cb(null, that);
                 } else {
@@ -41,15 +45,17 @@ app.model.Patient = function (params) {
     };
     
     this.create = function (cb) {
-        app.ajax.post({
+        $.ajax({
             url      : '/patient',
+            type     : 'POST',
+            dataType : 'JSON',
             data     : {
                 userId : this.userId,
                 name   : this.name,
                 email  : this.email,
                 phone  : this.phone
             },
-            callback : function (data) {
+            success  : function (data) {
                 if (!data.error) {
                     that._id = data.patient._id;
                     cb(null, that);
@@ -59,62 +65,24 @@ app.model.Patient = function (params) {
             }
         });
     };
-    
-    this.consultations = function (cb) {
-        app.model.Consultation.list(function (error, consultations) {
-            if (error) {
-                cb (error, null);
-            } else {
-                var result = [];
-                for (var i in consultations) {
-                    if (consultations[i].patientId === that._id) {
-                        result.push(consultations[i]);
-                    }
-                }
-                cb(null, result);
-            }
-        });
-    };
-    
-    this.user = function (cb) {
-        app.model.User.find(this.userId, function (error, user) {
-            if (error) {
-                cb(error, null);
-            } else {
-                cb(null, user);
-            }
-        });
-    };
 }
 
-app.model.Patient.list = function (cb) {
-    app.ajax.get({
+Patient.list = function (cb) {
+    $.ajax({
         url      : '/patients',
-        callback : function (data) {
+        type     : 'GET',
+        dataType : 'JSON',
+        success  : function (data) {
             if (!data.error) {
-                var consultations = []
+                var patients = []
                 
-                for (var i in data.consultations) {
-                    consultations.push(new app.model.Consultation(data.consultations[i]));
+                for (var i in data.patients) {
+                    patients.push(new Patient(data.patients[i]));
                 }
                 
-                cb(null, consultations);
+                cb(null, patients);
             } else {
                 cb('Error ao listar pacientes', null);
-            }
-        }
-    });
-}
-
-app.model.Patient.find = function (id, cb) {
-    app.ajax.get({
-        url      : '/patient/' + id,
-        callback : function (data) {
-            if (!data.error) {
-                var patient = new app.model.Patient(data.patient);
-                cb(null, patient);
-            } else {
-                cb('Error ao buscar paciente', null);
             }
         }
     });
