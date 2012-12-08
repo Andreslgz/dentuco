@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/font-awesome.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class="row">
+  <div class="span12">
+    <div id="top-bar">
+      <div class="span3 no-margin" style="width: 240px;">
+        <img src="img/logo.png" class="logo">
+      </div>
+      <div class="span5 no-margin" style="margin-top:30px;">
+        <div class="alert alert-success">
+          <a class="close" data-dismiss="alert" href="#">&times;</a>
+          <strong>Muito bem!</strong><br>
+          A consulta de <em>Mineiro</em> foi agendada com sucesso.
+        </div>
+      </div>
+      <div class="span4 no-margin" style="float:right; text-align:right;">
+        <div class="user-bar">
+          <div>
+            <a href="#">Ainda restam <strong>49 sms</strong> no seu pacote</a> |
+            <a href="#">Logout</a>
+          </div>
+          <div>
+            <h3>Dr. Wardemilson</h3>
+            <h4>Ortodontista Pediátrico</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div id="sidebar" class="span3 no-margin">
+      <ul class="nav nav-list">
+        <li><a href="index.html"><i class="icon-calendar sidebar-icon"></i>Agenda</a></li>
+        <li class="active"><a href="lista.html"><i class="icon-user sidebar-icon"></i>Pacientes</a></li>
+        <li class="disabled"><a href="#"><i class="icon-list-ol sidebar-icon"></i>Lista de Tarefas</a></li>
+        <li class="disabled"><a href="#"><i class="icon-refresh sidebar-icon"></i>Sincronizar</a></li>
+        <li class="disabled"><a href="#"><i class="icon-cogs sidebar-icon"></i>Configurações</a></li>
+      </ul>
+      <center><hr></center>
+    </div>
+    <div id="main-content" class="span9 no-margin">
+      <h1>Lista de Pacientes</h1>
+      <br/>
+      <div style="margin-bottom:20px; height: 30px;"><button style="float:right;" class="btn btn-primary" type="button" data-toggle="modal" data-target="#new-patient-modal"><i class="icon-plus"></i> Adicionar</button></div>
+      <ul class="unstyled">
+        <li>
+          <div style="height: 70px;">
+            <h4>Nome Completo do Paciente 1</h4>
+            <p style="float:left;">(19) 9123-2983 <br/>
+            fulano@gmail.com</p>
+            <div class="patient-buttons" style="float:right;">
+              <button class="btn" type="button" data-toggle="modal" data-target="#edit-patient-modal"><i class="icon-edit"></i> Editar</button>
+              <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete-patient-modal"><i class="icon-trash"></i> Apagar</button>
+            </div>
+          </div>
+          <hr style="margin: 20px 0px;">
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- New Modal -->
+  <div id="new-patient-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Adicionar Paciente</h3>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="name">Nome</label>
+          <div class="controls">
+            <input type="text" id="name" name="name" placeholder="Nome completo">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="tel">Telefone</label>
+          <div class="controls">
+            <input type="text" id="tel" name="tel" placeholder="(XX) YYYY-YYYY">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email">E-mail</label>
+          <div class="controls">
+            <input type="text" name="email" placeholder="paciente@email.com">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+      <button class="btn btn-primary" data-dismiss="modal">Salvar</button>
+    </div>
+  </div>
+  <!-- Edit Modal -->
+  <div id="edit-patient-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Editar Paciente</h3>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="name">Nome</label>
+          <div class="controls">
+            <input type="text" id="name" name="name" value="Nome completo do paciente 1">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="tel">Telefone</label>
+          <div class="controls">
+            <input type="text" id="tel" name="tel" value="(19) 9123-2983">
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label" for="email">E-mail</label>
+          <div class="controls">
+            <input type="text" name="email" value="fulano@gmail.com">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+      <button class="btn btn-primary" data-dismiss="modal">Salvar</button>
+    </div>
+  </div>
+  <!-- Delete Modal -->
+  <div id="delete-patient-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Apagar Paciente</h3>
+    </div>
+    <div class="modal-body">
+      Você tem certeza?
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+      <button class="btn btn-primary" data-dismiss="modal">Ok</button>
+    </div>
+  </div>
+</body>
+</html>
