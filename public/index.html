@@ -10,6 +10,7 @@
         <script type="text/javascript" src="js/User.js"></script>
         <script type="text/javascript" src="js/Patient.js"></script>
         <script type="text/javascript" src="js/Consultation.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
     </head>
     <body>
         <div class="row">
@@ -32,7 +33,7 @@
                                 <a href="#">Logout</a>
                             </div>
                             <div>
-                                <h3>Dr. Wardemilson</h3>
+                                <h3 id='topbar_username'>Dr. Wardemilson</h3>
                                 <h4>Ortodontista Pediátrico</h4>
                             </div>
                         </div>
@@ -55,7 +56,8 @@
             </div>
         </div>
         <script type="text/javascript">
-            User.find(function (user) {
+            User.find(function (error, user) {
+            	$('#topbar_username').html(user.name);
                 user.consultations(function (error, consultations) {
                     if (error) {
                         //colocar código de flash informando o error

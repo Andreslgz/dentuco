@@ -9,7 +9,7 @@ module.exports = function (model) {
     return function (app) {
         
         app.post('/patient', function (request, response) {
-            model.user.findOne({email : request.param('username', null)}, function (error, user) {
+            model.User.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -44,7 +44,7 @@ module.exports = function (model) {
         });
         
         app.get('/patients', function (request, response) {
-            model.user.findOne({email : request.param('username', null)}, function (error, user) {
+            model.User.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -77,7 +77,7 @@ module.exports = function (model) {
         });
         
         app.get('/patient/:id', function (request, response) {
-            model.user.findOne({email : request.param('username', null)}, function (error, user) {
+            model.User.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -110,7 +110,7 @@ module.exports = function (model) {
         });
         
         app.del('/patient/:id', function (request, response) {
-            model.user.findOne({email : request.param('username', null)}, function (error, user) {
+            model.User.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -144,7 +144,7 @@ module.exports = function (model) {
         });
         
         app.put('/patient/:id', function (request, response) {
-            model.user.findOne({email : request.param('username', null)}, function (error, user) {
+            model.User.findOne({email : request.param('username', null)}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {

@@ -16,7 +16,7 @@ module.exports = function (model) {
                 password : crypto.createHash('sha256').update(request.param('password', null)).digest('hex')
             });
             
-            user.save(function (error) {
+            User.save(function (error) {
                 if (error) {
                     response.send({error : 'validation error'});
                 } else {
@@ -50,7 +50,7 @@ module.exports = function (model) {
         });
         
         app.get('/user/:id', function (request, response) {
-            model.user.findOne({email : request.params.id}, function (error, user) {
+            model.User.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -69,7 +69,7 @@ module.exports = function (model) {
         });
         
         app.get('/user/:id/login', function (request, response) {
-            model.user.findOne({email : request.params.id}, function (error, user) {
+            model.User.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -79,7 +79,7 @@ module.exports = function (model) {
                         if (!user.login(request.param('password', ''))) {
                             response.send({error : 'user not found'});
                         } else {
-                            response.send({token : user.token});
+                            response.send({token : user.token()});
                         }
                     }
                 }
@@ -87,7 +87,7 @@ module.exports = function (model) {
         });
         
         app.get('/user/:id/validate', function (request, response) {
-            model.user.findOne({email : request.params.id}, function (error, user) {
+            model.User.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -110,7 +110,7 @@ module.exports = function (model) {
         });
         
         app.del('/user/:id', function (request, response) {
-            model.user.findOne({email : request.params.id}, function (error, user) {
+            model.User.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {
@@ -134,7 +134,7 @@ module.exports = function (model) {
         });
         
         app.put('/user/:id', function (request, response) {
-            model.user.findOne({email : request.params.id}, function (error, user) {
+            model.User.findOne({email : request.params.id}, function (error, user) {
                 if (error) {
                     response.send({error : 'internal server error'});
                 } else {

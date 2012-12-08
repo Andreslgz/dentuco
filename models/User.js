@@ -24,7 +24,7 @@ module.exports = function (mongoose) {
     };
     
     schema.methods.validate = function (token) {
-        return this.token === token;
+        return this.token() === token;
     }
     
     schema.methods.token = function () {

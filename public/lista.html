@@ -10,6 +10,7 @@
         <script type="text/javascript" src="js/User.js"></script>
         <script type="text/javascript" src="js/Patient.js"></script>
         <script type="text/javascript" src="js/Consultation.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
     </head>
     <body>
         <div class="row">
@@ -32,7 +33,7 @@
                                 <a href="#">Logout</a>
                             </div>
                             <div>
-                                <h3>Dr. Wardemilson</h3>
+                                <h3 id='topbar_username'>Dr. Wardemilson</h3>
                                 <h4>Ortodontista Pediátrico</h4>
                             </div>
                         </div>
@@ -50,23 +51,10 @@
                     <center><hr></center>
                 </div>
                 <div id="main-content" class="span9 no-margin">
-                    <h1>Lista de Pacientes</h1>
-                    <br/>
-                    <div style="margin-bottom:20px; height: 30px;"><button style="float:right;" class="btn btn-primary" type="button" data-toggle="modal" data-target="#new-patient-modal"><i class="icon-plus"></i> Adicionar</button></div>
-                    <ul class="unstyled">
-                        <li>
-                            <div style="height: 70px;">
-                                <h4>Nome Completo do Paciente 1</h4>
-                                <p style="float:left;">(19) 9123-2983 <br/>
-                                    fulano@gmail.com</p>
-                                <div class="patient-buttons" style="float:right;">
-                                    <button class="btn" type="button" data-toggle="modal" data-target="#edit-patient-modal"><i class="icon-edit"></i> Editar</button>
-                                    <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete-patient-modal"><i class="icon-trash"></i> Apagar</button>
-                                </div>
-                            </div>
-                            <hr style="margin: 20px 0px;">
-                        </li>
-                    </ul>
+                  <h1>Lista de Pacientes</h1>
+                  <br/>
+                  <div style="margin-bottom:20px; height: 30px;"><button style="float:right;" class="btn btn-primary" type="button" data-toggle="modal" data-target="#new-patient-modal"><i class="icon-plus"></i> Adicionar</button></div>
+                  <ul id="patients-list" class="unstyled"></ul>
                 </div>
             </div>
             <!-- New Modal -->
@@ -76,7 +64,7 @@
                     <h3 id="myModalLabel">Adicionar Paciente</h3>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal">
+                    <form id='patient-new' class="form-horizontal">
                         <div class="control-group">
                             <label class="control-label" for="name">Nome</label>
                             <div class="controls">
@@ -99,7 +87,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
-                    <button class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                    <button id='patient-new-save' class="btn btn-primary" data-dismiss="modal">Salvar</button>
                 </div>
             </div>
             <!-- Edit Modal -->
@@ -109,7 +97,7 @@
                     <h3 id="myModalLabel">Editar Paciente</h3>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal">
+                    <form id='patient-edit' class="form-horizontal">
                         <div class="control-group">
                             <label class="control-label" for="name">Nome</label>
                             <div class="controls">
@@ -132,7 +120,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
-                    <button class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                    <button id='patient-edit-save' class="btn btn-primary" data-dismiss="modal">Salvar</button>
                 </div>
             </div>
             <!-- Delete Modal -->
@@ -150,9 +138,10 @@
                 </div>
             </div>
         </div>
-        
+
         <script type="text/javascript">
-            User.find(function (user) {
+            User.find(function (error, user) {
+            	$('#topbar_username').html(user.name);
                 user.patients(function (error, patients) {
                     if (error) {
                         //colocar código de flash informando o error
@@ -162,9 +151,26 @@
                         }
                     }
                 });
-                
+            $("#patient-new-save").on("click", function(event){
+            	var form = $('#patient-new').serializeArray();
+            	var name  = form[0]['value'];
+            	var email = form[1]['value'];
+            	var tel   = form[2]['value'];
+            	create({name: name, email: email, phone: tel})
+						});
                 var draw = function (patient) {
-                    
+	                	console.log(patient);
+	                	var html  = '<li><div style="height: 70px;">';
+	                	html += '<h4>'+patient.name+'</h4>';
+	                	html += '<p style="float:left;">'+patient.phone+'<br/>'+patient.email+'</p>';
+	                	html += '<div class="patient-buttons" style="float:right;">';
+	                	html += '<button class="btn" type="button" data-toggle="modal" data-target="#edit-patient-modal"><i class="icon-edit"></i> Editar</button>';
+	                	html += '<button class="btn btn-danger" type="button" data-toggle="modal" data-target="#delete-patient-modal"><i class="icon-trash"></i> Apagar</button>';
+	                	html += '</div>';
+	                	html += '</div>';
+	                	html += '<hr style="margin: 20px 0px;">';
+	                	html += '</li>';
+	                  $('#patients-list').append(html);
                 }
                 
                 var erase = function (patient) {
@@ -183,11 +189,14 @@
                 };
                 
                 var create = function (data) {
-                    var patient = new Consultation(data);
+                	console.log(data);
+                    var patient = new Patient(data);
                     patient.create(function (error) {
                         if (error) {
+                        	console.log(error);
                             //colocar código de flash informando o error
                         } else {
+                        	console.log('success');
                             //colocar código de flash informando que a consulta foi cadastrada
                             draw(patient);
                         }

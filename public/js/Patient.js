@@ -50,12 +50,14 @@ var Patient = function (params) {
             type     : 'POST',
             dataType : 'JSON',
             data     : {
-                userId : this.userId,
-                name   : this.name,
-                email  : this.email,
-                phone  : this.phone
+                username : getCookie('id'),
+                token    : getCookie('token'),
+                name     : this.name,
+                email    : this.email,
+                phone    : this.phone
             },
             success  : function (data) {
+            	console.log(data.error);
                 if (!data.error) {
                     that._id = data.patient._id;
                     cb(null, that);
@@ -72,11 +74,16 @@ Patient.list = function (cb) {
         url      : '/patients',
         type     : 'GET',
         dataType : 'JSON',
+        data     : {
+            username : getCookie('id'),
+            token    : getCookie('token')
+        },
         success  : function (data) {
             if (!data.error) {
                 var patients = []
                 
                 for (var i in data.patients) {
+                	console.log(data.patients[i]);
                     patients.push(new Patient(data.patients[i]));
                 }
                 
