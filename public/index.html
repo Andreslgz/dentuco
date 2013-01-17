@@ -2,15 +2,19 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/font-awesome.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css"      rel="stylesheet">
+        <link href="css/font-awesome.css"       rel="stylesheet">
+        <link href="css/style.css"              rel="stylesheet">
+        <link href="css/fullcalendar.css"       rel="stylesheet">
+        <link href="css/fullcalendar.print.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
-        <script type="text/javascript" src="js/bootstrap.js"></script>
+        <!-- <script type="text/javascript" src="js/bootstrap.js"></script> -->
         <script type="text/javascript" src="js/User.js"></script>
         <script type="text/javascript" src="js/Patient.js"></script>
         <script type="text/javascript" src="js/Consultation.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
+        <script type="text/javascript" src="js/fullcalendar.min.js"></script>
     </head>
     <body>
         <div class="row">
@@ -60,6 +64,7 @@
                 <!-- Main-Content -->
                 <div id="main-content" class="span9 no-margin">
                     <h1>Agenda</h1>
+                    <div id="calendar"> </div>
                 </div>
                 <!-- /Main-Content -->
             </div>
@@ -71,9 +76,10 @@
                     if (error) {
                         flash('error', 'Erro.', error);
                     } else {
-                        for (var i in consultations) {
-                            draw(consultations[i]);
-                        }
+                        $('#calendar').fullCalendar({
+                        	defaultView : 'agendaWeek',
+                        	editable    : true
+                        });
                     }
                 });
 
