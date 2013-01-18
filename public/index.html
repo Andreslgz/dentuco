@@ -5,16 +5,19 @@
         <link href="css/bootstrap.min.css"      rel="stylesheet">
         <link href="css/font-awesome.css"       rel="stylesheet">
         <link href="css/style.css"              rel="stylesheet">
+        <link href='css/fullcalendar-theme.css' rel="stylesheet">
         <link href="css/fullcalendar.css"       rel="stylesheet">
         <link href="css/fullcalendar.print.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
         <!-- <script type="text/javascript" src="js/bootstrap.js"></script> -->
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/User.js"></script>
         <script type="text/javascript" src="js/Patient.js"></script>
         <script type="text/javascript" src="js/Consultation.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
         <script type="text/javascript" src="js/jquery-ui-1.8.23.custom.min.js"></script>
         <script type="text/javascript" src="js/fullcalendar.min.js"></script>
+        <!-- <script type='text/javascript' src='js/fullcalendar-gcal.js'></script> -->
     </head>
     <body>
         <div class="row">
@@ -68,17 +71,93 @@
                 </div>
                 <!-- /Main-Content -->
             </div>
+            <!-- New-Consultation-Modal -->
+            <div id="new-consultation-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 id="myModalLabel">Adicionar Consulta</h3>
+                </div>
+                <div class="modal-body">
+                    <form id='consultation-new' class="form-horizontal">
+                        <div class="control-group">
+                            <label class="control-label" for="name">Paciente</label>
+                            <div class="controls">
+                                <select id="patient-id" name="patient-id">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="description">Descrição</label>
+                            <div class="controls">
+                                <input type="text" id="description" name="description" placeholder="Descrição">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+                    <button id='consultation-new-save' class="btn btn-primary" data-dismiss="modal">Salvar</button>
+                </div>
+            </div>
+            <!-- New-Consultation-Modal -->
         </div>
         <script type="text/javascript">
             User.find(function (error, user) {
-            	$('#topbar_username').html(user.name);
+              $('#topbar_username').html(user.name);
                 user.consultations(function (error, consultations) {
                     if (error) {
                         flash('error', 'Erro.', error);
                     } else {
+                        var events = [];
+                        for (var i in consultations) events.push({
+                          title : consultations[i].description,
+                          start : consultations[i].dateStart,
+                          end   : consultations[i].dateFinish,
+                          allDay: false
+                        })
+
+                        var dateStart, dateFinish;
+                        $("#consultation-new-save").on('click', function () {
+                            var form = $('#consultation-new')
+                            var patient_id  = form.find('select[name=patient-id]').val()
+                            var description = form.find('input[name=description]').val()
+                            console.log(dateStart);
+                            console.log(dateFinish);
+
+                            var consultation = new Consultation({
+                              userId      : user._id,
+                              patientId   : patient_id,
+                              description : description,
+                              dateStart   : dateStart,
+                              dateFinish  : dateFinish
+                            });
+                            consultation.create(function (error, consultation) {
+                              if (!error) {
+                                // window.location.href = window.location.href
+                              } else {
+                                //exibe mensagem de error
+                              }
+                            });
+                        });
+
                         $('#calendar').fullCalendar({
-                        	defaultView : 'agendaWeek',
-                        	editable    : true
+                          defaultView : 'agendaWeek',
+                          editable    : true,
+                          selectable: true,
+                          events : events,
+                          // theme: true,
+                          select      : function (start, end) {
+                            user.patients(function (error, patients) {
+                              var html = "";
+                              for (var i in patients) {
+                                html += "<option value='"+patients[i]._id+"'>"+patients[i].name+"</option>"
+                              }
+                              $("#patient-id").html(html);
+                              $("#new-consultation-modal").modal();
+                            });
+                            dateStart = start;
+                            dateFinish = end;
+                          }
                         });
                     }
                 });

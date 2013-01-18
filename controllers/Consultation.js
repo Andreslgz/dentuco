@@ -26,6 +26,7 @@ module.exports = function (model) {
                                 dateStart   : request.param('dateStart', null),
                                 dateFinish  : request.param('dateFinish', null)
                             });
+
                             consultation.save(function (error) {
                                 if (error) {
                                     response.send({error : 'internal server error'});

@@ -90,6 +90,8 @@ Consultation.list = function (cb) {
                 var consultations = []
 
                 for (var i in data.consultations) {
+                    data.consultations[i].dateStart = new Date(data.consultations[i].dateStart)
+                    data.consultations[i].dateFinish = new Date(data.consultations[i].dateFinish)
                     consultations.push(new Consultation(data.consultations[i]));
                 }
 
